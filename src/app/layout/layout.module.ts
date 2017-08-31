@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
 import { HeaderComponent, SidebarComponent } from '../shared';
-import { MapsComponent } from './maps/maps.component';
+
 
 @NgModule({
     imports: [
@@ -18,8 +18,7 @@ import { MapsComponent } from './maps/maps.component';
     declarations: [
         LayoutComponent,
         HeaderComponent,
-        SidebarComponent,
-        MapsComponent,
+        SidebarComponent
     ]
 })
 export class LayoutModule { }
