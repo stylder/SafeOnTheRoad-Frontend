@@ -11,21 +11,35 @@
 
             <form role="form">
                 <div class="form-content">
+                    <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                         class="alert alert-danger">
+                        <div *ngIf="email.errors.required">
+                            Email is required.
+                        </div>
+                    </div>
                     <div class="form-group">
                         <input [(ngModel)]="user.email" name="email"
-                               type="text"
                                class="form-control input-underline input-lg"
-                               placeholder="Email">
+                               placeholder="Email"
+                               required #email="ngModel">
                     </div>
 
                     <div class="form-group">
+                        <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                             class="alert alert-danger">
+                            <div *ngIf="password.errors.required">
+                                Password is required.
+                            </div>
+                        </div>
                         <input [(ngModel)]="user.password" name="password"
                                type="password"
                                class="form-control input-underline input-lg"
-                               placeholder="Password">
+                               placeholder="Password"
+                               required #password="ngModel">
                     </div>
                 </div>
-                <a class="btn rounded-btn"
+                <a *ngIf="!password.invalid && !email.invalid"
+                    class="btn rounded-btn"
                    (click)="login()"> Log in </a>
                 &nbsp;
                 <a class="btn rounded-btn"

@@ -31,6 +31,11 @@ export class LoginComponent implements OnInit {
 
     alerts: Array<any> = [];
 
+    emailRequiredAlert: any = {
+        type: 'danger',
+        message: 'Email requerido'
+    }
+
     constructor(public router: Router, private http: Http) {
     }
 
