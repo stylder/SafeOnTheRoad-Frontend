@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {routerTransition} from '../router.animations';
-import {HttpClient} from '@angular/common/http';
-import {Http, Headers, RequestOptions} from '@angular/http';
+import {HttpService} from '../http/http.service'
 
 
 @Component({
@@ -11,8 +10,6 @@ import {Http, Headers, RequestOptions} from '@angular/http';
     animations: [routerTransition()]
 })
 export class SignupComponent implements OnInit {
-
-    apiRoot = 'http://localhost:8080/api/addUser   ';
 
 
     user: User = {
@@ -24,19 +21,24 @@ export class SignupComponent implements OnInit {
     };
 
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpService) {
     }
 
     ngOnInit() {
     }
 
     register() {
-        this.http.post(this.apiRoot, this.user)
-            .subscribe(data => {
-                console.log(data['_body']);
-            }, error => {
-                console.log(error); // Error getting the data
-            });
+
+
+        this.http.setAction('addUser');
+
+        this.http.HTTP(this.user).then(function success(data) {
+            console.log('>>', data)
+        }).catch(function (err) {
+            console.log('>>>', err)
+        })
+
+
     }
 
 
