@@ -33,9 +33,9 @@ export class SignupComponent implements OnInit {
         this.http.setAction('addUser');
 
         this.http.HTTP(this.user).then(function success(data) {
-            console.log('>>', data)
+            console.log('Success >>>', data)
         }).catch(function (err) {
-            console.log('>>>', err)
+            console.log('Error >>>', err)
         })
 
 

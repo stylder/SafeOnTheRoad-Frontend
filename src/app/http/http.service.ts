@@ -21,19 +21,17 @@ export class HttpService {
 
 
     HTTP(params) {
-
-
-        console.log(params)
         const promise = new Promise((resolve, reject) => {
             this.http.post(this.apiRoot + this.action, params)
                 .toPromise()
-                .then(
-                    res => { // Success
-                        console.log(res.json());
-                        resolve();
-                    }
-                );
+                .then(response => {
+                    resolve(JSON.parse(response['_body']));
+                }).catch(error => {
+                    reject(JSON.parse(error['_body']))
+                });
         });
         return promise;
     }
+
+
 }
