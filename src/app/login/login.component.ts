@@ -44,24 +44,26 @@ export class LoginComponent implements OnInit {
     }
 
     login() {
-        const url = 'http://localhost:8000/usuario_login';
+        const url = 'http://localhost:8080/api/logIn';
 
         return this.http
             .post(url, JSON.stringify(this.user), this.headers)
             .toPromise()
             .then(response => {
                 const data = response.json();
-                if (data.ok) {
+                if (data.session.user) {
                     console.log('Login correcto');
                     this.redirectToDashboard();
-                } else {
-                    console.error(data.error_message);
-                    this.showErrorMessage('Email o password incorrectos.');
                 }
             })
             .catch(error => {
-                console.error(error);
-                this.showErrorMessage('Error en el servidor');
+                if (error.status === 400) {
+                    console.log(error.json().error);
+                    this.showErrorMessage('Email o password incorrectos.');
+                } else {
+                    console.error(error);
+                    this.showErrorMessage('Error en el servidor');
+                }
             });
     }
 
