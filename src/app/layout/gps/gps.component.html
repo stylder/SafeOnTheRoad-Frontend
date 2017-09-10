@@ -1,38 +1,56 @@
 <app-page-header [heading]="'GPS'" [icon]="'fa-map-o'"></app-page-header>
 <div class="row">
 
-    <div class="form-group input-group">
-        <span class="input-group-addon">@</span>
-        <input type="text" class="form-control" placeholder="Travel Name">
+    <div class="col-md-6">
+        <div class="form-group input-group">
+            <span class="input-group-addon">@</span>
+            <input type="text" class="form-control" placeholder="Travel Name">
+        </div>
     </div>
+
+    <div class="col-md-6">
+        <div class="form-group input-group">
+            <span class="input-group-addon">$</span>
+            <input type="text" class="form-control" placeholder="Seconds"
+                   [(ngModel)]="seconds"
+                   [disabled]="running">
+            <span class="input-group-addon">.00</span>
+        </div>
+    </div>
+
+
 
     <div class="col-md-6">
         <fieldset class="form-group">
             <label>Initial Latitude</label>
-            <input class="form-control" placeholder="Latitude" [(ngModel)]="lat">
+            <input class="form-control" placeholder="Latitude" [(ngModel)]="initialMarker.lat">
         </fieldset>
     </div>
     <div class="col-md-6">
         <fieldset class="form-group">
             <label>Initial Longitude</label>
-            <input class="form-control" placeholder="Longitude" [(ngModel)]="lng">
+            <input class="form-control" placeholder="Longitude" [(ngModel)]="initialMarker.lng">
         </fieldset>
     </div>
 
-    <div class="form-group input-group">
-        <span class="input-group-addon">$</span>
-        <input type="text" class="form-control" placeholder="Seconds" [(ngModel)]="seconds">
-        <span class="input-group-addon">.00</span>
-    </div>
 
-    <div class="pull-right">
-        <button class="btn btn-outline-success" [disabled]="running"
-                (click)="initRute()">Beggin Travel</button>
-    </div>
 
-    <div class="pull-right">
-        <button class="btn btn-outline-danger" *ngIf="running"
-                (click)="endRute()">End Travel</button>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="text-right pull-right">
+
+
+                <button class="btn btn-outline-success pull-right" [disabled]="running"
+                        (click)="initRute()">Beggin Travel</button>
+
+                <button class="btn btn-outline-danger pull-right" *ngIf="running"
+                        (click)="endRute()">End Travel</button>
+
+                <button class="btn btn-outline-warning pull-right"
+                        (click)="clearMarkers()">Clear Markers</button>
+            </div>
+        </div>
     </div>
 
 
@@ -41,18 +59,18 @@
 
 <div [@routerTransition]>
     <agm-map
-        [latitude]="lat"
-        [longitude]="lng"
+        [latitude]="initialMarker.lat"
+        [longitude]="initialMarker.lng"
         [zoom]="zoom"
         [disableDefaultUI]="false"
         [zoomControl]="false"
         (mapClick)="mapClicked($event)">
 
         <agm-marker
-            [latitude]="lat"
-            [longitude]="lng"
+            [latitude]="initialMarker.lat"
+            [longitude]="initialMarker.lng"
             (dragEnd)="markerDrag($event)"
-            [markerDraggable]="true">
+            [markerDraggable]="initialMarker.draggable">
 
         </agm-marker>
 

@@ -14,13 +14,14 @@ import {Observable} from 'rxjs/Rx';
 export class GPSComponent implements OnInit {
 
     // initial center position for the map
-    lat = 22.6464226;
-    lng = -103.0205916;
-    lastMarket: Marker = {
-        lat: this.lat + .001,
-        lng: this.lng + .001,
-        draggable: false
+
+    initialMarker: Marker = {
+        lat: 22.6464226,
+        lng: -103.0205916,
+        draggable: true
     };
+
+
     seconds = 5;
     running = false;
     zoom = 10;
@@ -41,7 +42,6 @@ export class GPSComponent implements OnInit {
             lat: $event.coords.lat,
             lng: $event.coords.lng,
             draggable: true
-
         })
     }
 
@@ -50,8 +50,8 @@ export class GPSComponent implements OnInit {
     }
 
     markerDrag($event: any) {
-        this.lat = $event.coords.lat;
-        this.lng = $event.coords.lng;
+        this.initialMarker.lat = $event.coords.lat;
+        this.initialMarker.lng = $event.coords.lng;
         console.log('>>>DragEnd', $event);
     }
 
@@ -59,14 +59,24 @@ export class GPSComponent implements OnInit {
         console.log('>>>Iniciando ruta cada:', this.seconds, 'segundos');
         this.running = true;
 
+        let temporalMarker = {
+            lat: this.initialMarker.lat + 0.001,
+            lng: this.initialMarker.lng + 0.001,
+            draggable: false
+        };
+
+        this.initialMarker.draggable = false;
 
         this.subscription = Observable.interval(2000 * this.seconds).subscribe(x => {
 
-            this.lastMarket.lat = this.lastMarket.lat + .00;
-            this.lastMarket.lng = this.lastMarket.lng + .00;
+            temporalMarker = {
+                lat: temporalMarker.lat + 0.01,
+                lng: temporalMarker.lng + 0.01,
+                draggable: false
+            };
 
-            console.log('>>>', this.lastMarket);
-            this.markers.push(this.lastMarket)
+            console.log('>>>', temporalMarker);
+            this.markers.push(temporalMarker)
 
         });
     }
@@ -74,7 +84,12 @@ export class GPSComponent implements OnInit {
     endRute() {
         console.log('>>>Terminando Viaje');
         this.running = false;
+        this.initialMarker.draggable = true;
         this.subscription.unsubscribe();
+    }
+
+    clearMarkers() {
+        this.markers = [];
     }
 
 
