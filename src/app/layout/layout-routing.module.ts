@@ -8,6 +8,7 @@ const routes: Routes = [
         children: [
             { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
             { path: 'maps', loadChildren: './maps/maps.module#MapsModule' },
+            { path: 'gps-emulator', loadChildren: './gps/gps.module#GPSModule' },
             { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },
             { path: 'tables', loadChildren: './tables/tables.module#TablesModule' },
             { path: 'forms', loadChildren: './form/form.module#FormModule' },
@@ -24,3 +25,4 @@ const routes: Routes = [
     exports: [RouterModule]
 })
 export class LayoutRoutingModule { }
+

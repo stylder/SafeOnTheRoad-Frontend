@@ -1,6 +1,8 @@
 import {environment} from 'environments/environment';
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
+import {Router} from '@angular/router';
+
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
@@ -11,7 +13,7 @@ export class HttpService {
     private action: string;
 
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private router: Router) {
     }
 
 
@@ -27,11 +29,21 @@ export class HttpService {
                 .then(response => {
                     resolve(JSON.parse(response['_body']));
                 }).catch(error => {
-                    reject(JSON.parse(error['_body']))
-                });
+                this.processError(error.status);
+                reject(JSON.parse(error['_body']))
+            });
         });
         return promise;
     }
 
-
+    processError(code) {
+        if (code === 401) { // Not Login
+            console.log('You\'not login');
+            this.router.navigate(['/login']);
+        } else if (code === 402) { // Not Permission.
+            console.log('You do\'nt have permision');
+        } else {
+            console.log('Error', code);
+        }
+    }
 }

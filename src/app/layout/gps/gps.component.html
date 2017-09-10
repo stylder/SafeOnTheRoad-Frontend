@@ -1,0 +1,70 @@
+<app-page-header [heading]="'GPS'" [icon]="'fa-map-o'"></app-page-header>
+<div class="row">
+
+    <div class="form-group input-group">
+        <span class="input-group-addon">@</span>
+        <input type="text" class="form-control" placeholder="Travel Name">
+    </div>
+
+    <div class="col-md-6">
+        <fieldset class="form-group">
+            <label>Initial Latitude</label>
+            <input class="form-control" placeholder="Latitude" [(ngModel)]="lat">
+        </fieldset>
+    </div>
+    <div class="col-md-6">
+        <fieldset class="form-group">
+            <label>Initial Longitude</label>
+            <input class="form-control" placeholder="Longitude" [(ngModel)]="lng">
+        </fieldset>
+    </div>
+
+    <div class="form-group input-group">
+        <span class="input-group-addon">$</span>
+        <input type="text" class="form-control" placeholder="Seconds" [(ngModel)]="seconds">
+        <span class="input-group-addon">.00</span>
+    </div>
+
+    <div class="pull-right">
+        <button class="btn btn-outline-success" [disabled]="running"
+                (click)="initRute()">Beggin Travel</button>
+    </div>
+
+    <div class="pull-right">
+        <button class="btn btn-outline-danger" *ngIf="running"
+                (click)="endRute()">End Travel</button>
+    </div>
+
+
+</div>
+
+
+<div [@routerTransition]>
+    <agm-map
+        [latitude]="lat"
+        [longitude]="lng"
+        [zoom]="zoom"
+        [disableDefaultUI]="false"
+        [zoomControl]="false"
+        (mapClick)="mapClicked($event)">
+
+        <agm-marker
+            [latitude]="lat"
+            [longitude]="lng"
+            (dragEnd)="markerDrag($event)"
+            [markerDraggable]="true">
+
+        </agm-marker>
+
+
+        <agm-marker *ngFor="let m of markers; let i = index"
+                    (markerClick)="clickedMarker(m.label, i)"
+                    [latitude]="m.lat"
+                    [longitude]="m.lng"
+                    [label]="m.label"
+                    [markerDraggable]="m.draggable">
+        </agm-marker>
+
+    </agm-map>
+
+</div>
