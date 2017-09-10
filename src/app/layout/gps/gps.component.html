@@ -4,7 +4,8 @@
     <div class="col-md-6">
         <div class="form-group input-group">
             <span class="input-group-addon">@</span>
-            <input type="text" class="form-control" placeholder="Travel Name">
+            <input type="text" class="form-control" placeholder="Travel Name"
+                   [disabled]="running">
         </div>
     </div>
 
@@ -23,39 +24,39 @@
     <div class="col-md-6">
         <fieldset class="form-group">
             <label>Initial Latitude</label>
-            <input class="form-control" placeholder="Latitude" [(ngModel)]="initialMarker.lat">
+            <input class="form-control" placeholder="Latitude"
+                   [disabled]="running"
+                   [(ngModel)]="initialMarker.lat">
         </fieldset>
     </div>
     <div class="col-md-6">
         <fieldset class="form-group">
             <label>Initial Longitude</label>
-            <input class="form-control" placeholder="Longitude" [(ngModel)]="initialMarker.lng">
+            <input class="form-control" placeholder="Longitude"
+                   [disabled]="running"
+                   [(ngModel)]="initialMarker.lng">
         </fieldset>
     </div>
-
-
-
-
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="text-right pull-right">
-
-
-                <button class="btn btn-outline-success pull-right" [disabled]="running"
-                        (click)="initRute()">Beggin Travel</button>
-
-                <button class="btn btn-outline-danger pull-right" *ngIf="running"
-                        (click)="endRute()">End Travel</button>
-
-                <button class="btn btn-outline-warning pull-right"
-                        (click)="clearMarkers()">Clear Markers</button>
-            </div>
-        </div>
-    </div>
-
-
 </div>
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6 text-right">
+            <button class="btn btn-outline-success" [disabled]="running"
+                    (click)="initRute()">Beggin Travel</button>
+
+            <button class="btn btn-outline-danger" *ngIf="running"
+                    (click)="endRute()">End Travel</button>
+
+            <button class="btn btn-outline-warning"
+                    (click)="clearMarkers()">Clear Markers</button>
+        </div>
+    </div>
+</div>
+
+<hr>
 
 <div [@routerTransition]>
     <agm-map
