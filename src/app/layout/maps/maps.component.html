@@ -16,18 +16,30 @@
                     [longitude]="m.lng"
                     [label]="m.label"
                     [markerDraggable]="m.draggable">
-
         </agm-marker>
 
 
         <agm-circle
             [latitude]="lat"
             [longitude]="lng"
-            [radius]="1000"
+            [radius]="10000"
             [fillColor]="'red'"
             [circleDraggable]="true"
             [editable]="true">
         </agm-circle>
+
+        <agm-polyline></agm-polyline>
+
+        <agm-polyline *ngFor="let m of markers; let i = index"></agm-polyline>
+
+        <agm-polyline  [title]="'DOT-to-DOT site'"
+                       [strokeColor]="'red'">
+
+            <agm-polyline-point *ngFor="let m of markers"
+                                [latitude]="m.lat"
+                                [longitude]="m.lng">
+            </agm-polyline-point>
+        </agm-polyline>
     </agm-map>
 
 </div>

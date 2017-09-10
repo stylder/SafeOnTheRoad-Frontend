@@ -10,13 +10,12 @@ import {routerTransition} from '../../router.animations';
 })
 
 
-
 export class MapsComponent implements OnInit {
 
     // initial center position for the map
-    lat: number = 22.6464226;
+    lat = 22.6464226;
     lng: number = -103.0205916;
-    zoom: number = 10;
+    zoom = 10;
     markers: Marker[];
 
 
@@ -26,13 +25,19 @@ export class MapsComponent implements OnInit {
             {
                 lat: 22.6464226,
                 lng: -103.0205916,
-                label: "Jerez",
+                label: 'Jerez',
                 draggable: true
             },
             {
                 lat: 22.7766572,
                 lng: -102.9371446,
                 label: 'Los Haro',
+                draggable: true
+            },
+            {
+                lat: 22.9166572,
+                lng: -102.9371446,
+                label: 'Jardín',
                 draggable: true
             }
         ]
@@ -56,13 +61,7 @@ export class MapsComponent implements OnInit {
         console.log(`clicked the marker: ${label || index}`)
     }
 
-
-
-
-
-
 }
-
 
 
 interface Marker {
