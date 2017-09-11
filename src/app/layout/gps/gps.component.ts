@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {routerTransition} from '../../router.animations';
 import {Observable} from 'rxjs/Rx';
+import {HttpService} from '../../http/http.service'
 
 
 @Component({
@@ -25,10 +26,11 @@ export class GPSComponent implements OnInit {
     seconds = 5;
     running = false;
     zoom = 10;
+    name: string;
     markers: Marker[];
     subscription: any;
 
-    constructor() {
+    constructor(private http: HttpService) {
         this.markers = []
     }
 
@@ -58,27 +60,47 @@ export class GPSComponent implements OnInit {
     initRute() {
         console.log('>>>Iniciando ruta cada:', this.seconds, 'segundos');
         this.running = true;
-
-        let temporalMarker = {
+        this.initialMarker.draggable = false;
+        let temporalMarker: Marker = {
             lat: this.initialMarker.lat + 0.001,
             lng: this.initialMarker.lng + 0.001,
             draggable: false
         };
 
-        this.initialMarker.draggable = false;
 
-        this.subscription = Observable.interval(2000 * this.seconds).subscribe(x => {
+        this.http.setAction('addRute');
 
-            temporalMarker = {
-                lat: temporalMarker.lat + 0.01,
-                lng: temporalMarker.lng + 0.01,
-                draggable: false
-            };
+        this.http.HTTP({'name': this.name}).then(function success(data: any) {
+            const id_rute = data.data._id
+            console.log('Success >>>', id_rute);
 
-            console.log('>>>', temporalMarker);
-            this.markers.push(temporalMarker)
 
+            this.http.setAction('addLatLong');
+
+            this.subscription = Observable.interval(2000 * this.seconds).subscribe(x => {
+
+                temporalMarker = {
+                    lat: temporalMarker.lat + 0.01,
+                    lng: temporalMarker.lng + 0.01,
+                    draggable: false,
+                    rute_id: id_rute
+                };
+
+                console.log('>>>', temporalMarker);
+                this.markers.push(temporalMarker);
+
+                this.http.HTTP(temporalMarker).then(function success(data_marker) {
+                    console.log('Success >>>', data_marker)
+                }).catch(function (err) {
+                    console.log('Error >>>', err)
+                })
+            });
+
+        }).catch(function (err) {
+            console.log('Error >>>', err)
         });
+
+
     }
 
     endRute() {
@@ -99,6 +121,7 @@ export class GPSComponent implements OnInit {
 interface Marker {
     lat: number;
     lng: number;
-    label?: string;
     draggable: boolean;
+    label?: string;
+    rute_id?: any;
 }

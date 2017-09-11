@@ -10,23 +10,7 @@
         (mapClick)="mapClicked($event)">
 
 
-        <agm-marker *ngFor="let m of markers; let i = index"
-                    (markerClick)="clickedMarker(m.label, i)"
-                    [latitude]="m.lat"
-                    [longitude]="m.lng"
-                    [label]="m.label"
-                    [markerDraggable]="m.draggable">
-        </agm-marker>
 
-
-        <agm-circle
-            [latitude]="lat"
-            [longitude]="lng"
-            [radius]="10000"
-            [fillColor]="'red'"
-            [circleDraggable]="true"
-            [editable]="true">
-        </agm-circle>
 
         <agm-polyline  [title]="'DOT-to-DOT site'"
                        [strokeColor]="'red'">
